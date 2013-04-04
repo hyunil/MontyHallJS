@@ -15,7 +15,11 @@ function main()
 
 
   var chartCanvas = $("<canvas width='400' height='400'></canvas>");
-  chartCanvas.appendTo($("body");
+  var chartContext = chartCanvas.get(0).getContext("2d");
+  chartCanvas.appendTo($("body"));
+
+  var chart = new Chart(chartContext);
+  chart.Pie([{value: 30, color: "#ffa"}, {value: 40, color: "#533"}, {value: 100, color: "#868"}], chart.Pie.defaults);
 
   Update();
 }
