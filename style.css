@@ -1,0 +1,110 @@
+/* UI Objects */
+#DoorContainer
+{
+}
+
+/* UI Classes */
+.MajorColor
+{
+  background: #a69;
+}
+
+.MinorColor
+{
+  background: #69a;
+}
+
+.Button
+{
+  display: inline-block;
+  padding: 20px;
+  font-family: "proxima-nova", sans-serif;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 18px;
+  cursor: hand;
+  cursor: pointer;
+  -webkit-transition-property: background-color;
+  -webkit-transition-duration: 200ms;
+  -webkit-transition-timing-function: ease-in-out;
+  -moz-transition-property: background-color;
+  -moz-transition-duration: 200ms;
+  -moz-transition-timing-function: ease-in-out;
+  -ms-transition-property: background-color;
+  -ms-transition-duration: 200ms;
+  -ms-transition-timing-function: ease-in-out;
+  -o-transition-property: background-color;
+  -o-transition-duration: 200ms;
+  -o-transition-timing-function: ease-in-out;
+  transition-property: background-color;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+.Button.MajorColor:hover
+{
+  background: #736;
+}
+
+.Button.MinorColor:hover
+{
+  background: #367;
+}
+
+.ChartCanvas
+{
+  display: inline-block;
+}
+
+.ChartCanvasLabel
+{
+  display: inline-block;
+  margin-left: 100px !important;
+  margin-right: 100px !important;
+  font-family: "proxima-nova", sans-serif;
+  font-weight: bold;
+  color: #333;
+}
+
+.Grid div
+{
+  display: inline-block;
+  margin: 20px;
+}
+
+.Door
+{
+  width: 75px;
+  height: 120px;
+  background: #555;
+}
+
+.SelectedDoor
+{
+  background: #77a;
+}
+
+.IncorrectDoor
+{
+  background: #a77;
+}
+
+/* General classes */
+.Centered
+{
+  margin: auto;
+  text-align: center;
+}
+
+.Positioned
+{
+  position: absolute;
+}
+
+.Offscreen
+{
+  position: absolute;
+  top: -1000px;
+}
