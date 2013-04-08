@@ -1,3 +1,9 @@
+/* Global */
+html
+{
+  font-family: "proxima-nova", sans-serif;
+}
+
 /* UI Objects */
 #DoorContainer
 {
@@ -43,6 +49,11 @@
   transition-timing-function: ease-in-out;
 }
 
+.Header
+{
+  font-size: 28px;
+}
+
 .Button.MajorColor:hover
 {
   background: #736;
@@ -51,6 +62,16 @@
 .Button.MinorColor:hover
 {
   background: #367;
+}
+
+.Green
+{
+  color: #7c7;
+}
+
+.Red
+{
+  color: #c55;
 }
 
 .ChartCanvas

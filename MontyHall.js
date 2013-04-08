@@ -130,22 +130,35 @@ function SelectDoor(door)
 
     $($(".Door")[selectedDoor]).removeClass("SelectedDoor");
 
+    var result;
     if (door == correctDoor)
     {
       if (door != selectedDoor)
         ++numTimesSwitchedAndWon;
       else
         ++numTimesNoSwitchAndWon;
+
+      result = $("<div class='Header Green Offscreen'>Correct</div>");
+      result.appendTo($("body"));
+      AnimateFromTo(result, [windowSize[0] / 2, -100], [windowSize[0] / 2, windowSize[1] / 2], 1000);
+
       // $("<div class='Header Centered'>You chose correctly!</div>").appendTo($("#GameContainer"));
     }
     else
     {
+      result = $("<div class='Header Red Offscreen'>Incorrect</div>");
+      result.appendTo($("body"));
+      AnimateFromTo(result, [windowSize[0] / 2, -100], [windowSize[0] / 2, windowSize[1] / 2], 1000);
       // $("<div class='Header Centered'>You chose the wrong door</div>").appendTo($("#GameContainer"));
     }
 
-    $("#DoorContainer").empty();
-    UpdateCharts();
-    ShowRestartMenu();
+    setTimeout(function()
+    {
+      $("#DoorContainer").empty();
+      UpdateCharts();
+      ShowRestartMenu();
+      result.remove();
+    }, 1500);
   }
 }
 
@@ -189,6 +202,42 @@ function ShowRestartMenu()
 
 function ShowAutomaticMenu()
 {
+  for (var i = 0; i < 1000; ++i)
+  {
+    var correct = Math.floor(Math.random() * numDoors);
+    var choice = Math.floor(Math.random() * numDoors);
+    var otherDoor = Math.floor(Math.random() * numDoors);
+    var switched = false;
+    while (otherDoor == choice || otherDoor == correct)
+    {
+      ++otherDoor;
+      if (otherDoor >= numDoors)
+        otherDoor = 0;
+    }
+    if (choice != correct)
+      otherDoor = correct;
+
+    var finalChoice = Math.round(Math.random());
+    if (finalChoice == 0)
+    {
+      choice = otherDoor;
+      switched = true;
+      ++numTimesSwitched;
+    }
+    else
+      ++numTimesNoSwitch;
+
+    if (choice == correct)
+    {
+      if (switched)
+        ++numTimesSwitchedAndWon;
+      else
+        ++numTimesNoSwitchAndWon;
+    }
+  }
+
+  UpdateCharts();
+  ShowMainMenu();
 }
 
 function UpdateCharts()
