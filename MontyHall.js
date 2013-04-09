@@ -20,6 +20,10 @@ function main()
   var canvasContainer = $("<div class='Centered'></div>").appendTo($("body"));
   var canvasA = $("<canvas width='300px' height=200px' class='ChartCanvas Centered'></canvas>").appendTo(canvasContainer);
   var canvasB = $("<canvas width='300px' height=200px' class='ChartCanvas Centered'></canvas>").appendTo(canvasContainer);
+  $("<div id='DoorContainer' class='Centered Grid'></div").appendTo($("body"));
+  $("<div class='Centered ButtonContainer' id='ButtonContainer1'></div>").appendTo($("body"));
+  $("<div class='Centered ButtonContainer' id='ButtonContainer2'></div>").appendTo($("body"));
+  $("<div class='Centered ButtonContainer' id='ButtonContainer3'></div>").appendTo($("body"));
 
   chartContextSwitch = canvasA.get(0).getContext("2d");
   chartContextNoSwitch = canvasB.get(0).getContext("2d");
@@ -32,45 +36,44 @@ function ShowMainMenu()
 {
   var gameButton = $("<div class='Button MajorColor Offscreen'>Interactive</div>");
   var autoButton = $("<div class='Button MinorColor Offscreen'>Automatic</div>");
+  var inputDoors = $("<div class='Offscreen'><span>Doors</span><input></input></div>");
 
-  gameButton.appendTo($("body"));
-  autoButton.appendTo($("body"));
+  gameButton.appendTo($("#ButtonContainer1"));
+  autoButton.appendTo($("#ButtonContainer2"));
+  inputDoors.appendTo($("#ButtonContainer3"));
 
-  AnimateFromTo(gameButton, [windowSize[0] / 2 - buttonSpacing, -100], [windowSize[0] / 2 - buttonSpacing, windowSize[1] / 2], 1000);
-  AnimateFromTo(autoButton, [windowSize[0] / 2 + buttonSpacing, -100], [windowSize[0] / 2 + buttonSpacing, windowSize[1] / 2], 1000, 100);
+  AnimateFromTo(gameButton, [-500, 0], [$("#ButtonContainer1").width() / 2, 0], 1000);
+  AnimateFromTo(autoButton, [1500, 0], [$("#ButtonContainer2").width() / 2, 0], 1000, 100);
+  AnimateFromTo(inputDoors, [-500, 0], [$("#ButtonContainer3").width() / 2, 0], 1000, 100);
+
+  inputDoors.children($("input")).val(numDoors);
+  inputDoors.children($("input")).bind("change", function()
+  {
+    numDoors = parseInt($(this).val());
+    if (numDoors < 3)
+      numDoors = 3;
+  });
 
   gameButton.bind("click", function()
   {
-    AnimateFromTo(gameButton, [windowSize[0] / 2 - buttonSpacing, windowSize[1] / 2], [windowSize[0] / 2 - buttonSpacing, -100], 1000);
-    AnimateFromTo(autoButton, [windowSize[0] / 2 + buttonSpacing, windowSize[1] / 2], [windowSize[0] / 2 + buttonSpacing, -100], 1000, 100);
-    setTimeout(function()
-    {
-      gameButton.remove();
-      autoButton.remove();
-    }, 2000);
+    gameButton.remove();
+    autoButton.remove();
+    inputDoors.remove();
     ShowInteractiveMenu();
   });
 
   autoButton.bind("click", function()
   {
-    AnimateFromTo(gameButton, [windowSize[0] / 2 - buttonSpacing, windowSize[1] / 2], [windowSize[0] / 2 - buttonSpacing, -100], 1000);
-    AnimateFromTo(autoButton, [windowSize[0] / 2 + buttonSpacing, windowSize[1] / 2], [windowSize[0] / 2 + buttonSpacing, -100], 1000, 100);
-    setTimeout(function()
-    {
-      gameButton.remove();
-      autoButton.remove();
-    }, 2000);
+    gameButton.remove();
+    autoButton.remove();
+    inputDoors.remove();
     ShowAutomaticMenu();
   });
 }
 
 function ShowInteractiveMenu()
 {
-  var gameContainer = $("<div id='GameContainer'></div>");
-  gameContainer.appendTo($("body"));
-  var doorContainer = $("<div id='DoorContainer' class='Centered Grid'></div");
-  doorContainer.appendTo(gameContainer);
-
+  var doorContainer = $("#DoorContainer");
   var doors = [];
   for (var i = 0; i < numDoors; ++i)
   {
@@ -91,16 +94,12 @@ function ShowInteractiveMenu()
 
   selectedDoor = -1;
   correctDoor = Math.floor(Math.random() * doors.length);
-  // $("<div class='Header Centered'>Which door is correct?</div>").appendTo($("#GameContainer"));
 }
 
 function SelectDoor(door)
 {
   if (selectedDoor < 0)
   {
-    // $("<div class='Header Centered'>I will now reveal " + (numDoors - 2) + " of the incorrect doors</div>").appendTo($("#GameContainer"));
-    // $("<div class='Header Centered'>You may keep or adjust your answer now</div>").appendTo($("#GameContainer"));
-
     var otherDoor = Math.floor(Math.random() * numDoors);
     while (otherDoor == door || otherDoor == correctDoor)
     {
@@ -120,6 +119,14 @@ function SelectDoor(door)
         $(this).addClass("IncorrectDoor");
       }
     });
+
+    result = $("<div class='Header MajorColorForeground Offscreen'>Change answer?</div>");
+    result.appendTo($("body"));
+    AnimateFromTo(result, [windowSize[0] / 2, -100], [windowSize[0] / 2, 400], 1000);
+    setTimeout(function()
+    {
+      result.fadeOut({complete: function() {$(this).remove()}});
+    }, 1500);
   }
   else
   {
@@ -140,16 +147,13 @@ function SelectDoor(door)
 
       result = $("<div class='Header Green Offscreen'>Correct</div>");
       result.appendTo($("body"));
-      AnimateFromTo(result, [windowSize[0] / 2, -100], [windowSize[0] / 2, windowSize[1] / 2], 1000);
-
-      // $("<div class='Header Centered'>You chose correctly!</div>").appendTo($("#GameContainer"));
+      AnimateFromTo(result, [windowSize[0] / 2, -100], [windowSize[0] / 2, 200], 1000);
     }
     else
     {
       result = $("<div class='Header Red Offscreen'>Incorrect</div>");
       result.appendTo($("body"));
-      AnimateFromTo(result, [windowSize[0] / 2, -100], [windowSize[0] / 2, windowSize[1] / 2], 1000);
-      // $("<div class='Header Centered'>You chose the wrong door</div>").appendTo($("#GameContainer"));
+      AnimateFromTo(result, [windowSize[0] / 2, -100], [windowSize[0] / 2, 200], 1000);
     }
 
     setTimeout(function()
@@ -167,35 +171,23 @@ function ShowRestartMenu()
   var restartButton = $("<div class='Button MajorColor Offscreen'>Again</div>");
   var backButton = $("<div class='Button MinorColor Offscreen'>Back</div>");
 
-  restartButton.appendTo($("body"));
-  backButton.appendTo($("body"));
+  restartButton.appendTo($("#ButtonContainer1"));
+  backButton.appendTo($("#ButtonContainer2"));
 
-  AnimateFromTo(restartButton, [windowSize[0] / 2 - buttonSpacing, -100], [windowSize[0] / 2 - buttonSpacing, windowSize[1] / 2], 1000);
-  AnimateFromTo(backButton, [windowSize[0] / 2 + buttonSpacing, -100], [windowSize[0] / 2 + buttonSpacing, windowSize[1] / 2], 1000, 100);
+  AnimateFromTo(restartButton, [-500, 0], [$("#ButtonContainer1").width() / 2, 0], 1000);
+  AnimateFromTo(backButton, [1500, 0], [$("#ButtonContainer2").width() / 2, 0], 1000, 100);
 
   restartButton.bind("click", function()
   {
-    $("#GameContainer").remove();
-    AnimateFromTo(restartButton, [windowSize[0] / 2 - buttonSpacing, windowSize[1] / 2], [windowSize[0] / 2 - buttonSpacing, windowSize[1] + 100], 1000);
-    AnimateFromTo(backButton, [windowSize[0] / 2 + buttonSpacing, windowSize[1] / 2], [windowSize[0] / 2 + buttonSpacing, windowSize[1] + 100], 1000, 100);
-    setTimeout(function()
-    {
-      restartButton.remove();
-      backButton.remove();
-    }, 2000);
+    restartButton.remove();
+    backButton.remove();
     ShowInteractiveMenu();
   });
 
   backButton.bind("click", function()
   {
-    $("#GameContainer").remove();
-    AnimateFromTo(restartButton, [windowSize[0] / 2 - buttonSpacing, windowSize[1] / 2], [windowSize[0] / 2 - buttonSpacing, windowSize[1] + 100], 1000);
-    AnimateFromTo(backButton, [windowSize[0] / 2 + buttonSpacing, windowSize[1] / 2], [windowSize[0] / 2 + buttonSpacing, windowSize[1] + 100], 1000, 100);
-    setTimeout(function()
-    {
-      restartButton.remove();
-      backButton.remove();
-    }, 2000);
+    restartButton.remove();
+    backButton.remove();
     ShowMainMenu();
   });
 }
@@ -236,8 +228,20 @@ function ShowAutomaticMenu()
     }
   }
 
-  UpdateCharts();
-  ShowMainMenu();
+  result = $("<div class='Header MajorColorForeground Offscreen'>Running 1000 times</div>");
+  result.appendTo($("body"));
+  AnimateFromTo(result, [windowSize[0] / 2, -100], [windowSize[0] / 2, 285], 1000);
+
+  setTimeout(function()
+  {
+    UpdateCharts();
+    ShowMainMenu();
+    AnimateFromTo(result, [windowSize[0] / 2, 285], [windowSize[0] / 2, -100], 1000);
+    setTimeout(function()
+    {
+      result.remove();
+    }, 1000);
+  }, 2000);
 }
 
 function UpdateCharts()
@@ -271,8 +275,8 @@ function AnimateFromTo(element, posA, posB, time, delay)
     .easing(TWEEN.Easing.Elastic.InOut)
     .onUpdate(function()
     {
-      element.css("left", this.x + "px");
-      element.css("top", this.y + "px");
+      element.css("left", this.x - element.outerWidth() / 2 + "px");
+      element.css("top", this.y - element.outerHeight() / 2 + "px");
     })
     .delay(delay ? delay : 0)
     .start();
