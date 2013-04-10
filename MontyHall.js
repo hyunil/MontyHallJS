@@ -16,7 +16,7 @@ function main()
 {
   var labelContainer = $("<div class='Centered'></div>").appendTo($("body"));
   $("<div class='Centered ChartCanvasLabel'>Wins by switching</div>").appendTo(labelContainer);
-  $("<div class='Centered ChartCanvasLabel'>Wins by without switching</div>").appendTo(labelContainer);
+  $("<div class='Centered ChartCanvasLabel'>Wins by not switching</div>").appendTo(labelContainer);
   var canvasContainer = $("<div class='Centered'></div>").appendTo($("body"));
   var canvasA = $("<canvas width='300px' height=200px' class='ChartCanvas Centered'></canvas>").appendTo(canvasContainer);
   var canvasB = $("<canvas width='300px' height=200px' class='ChartCanvas Centered'></canvas>").appendTo(canvasContainer);
